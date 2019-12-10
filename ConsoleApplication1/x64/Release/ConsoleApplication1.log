@@ -1,0 +1,15 @@
+﻿  pch.cpp
+  ConsoleApplication1.cpp
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(740,47): warning C4200: nonstandard extension used: zero-sized array in struct/union
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(740,47): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(765,79): warning C4200: nonstandard extension used: zero-sized array in struct/union
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(765,79): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(1258,71): warning C4200: nonstandard extension used: zero-sized array in struct/union
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(1258,71): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+ConsoleApplication1.obj : error LNK2001: unresolved external symbol libusb_init
+ConsoleApplication1.obj : error LNK2001: unresolved external symbol libusb_open_device_with_vid_pid
+ConsoleApplication1.obj : error LNK2001: unresolved external symbol libusb_detach_kernel_driver
+ConsoleApplication1.obj : error LNK2001: unresolved external symbol libusb_set_configuration
+ConsoleApplication1.obj : error LNK2001: unresolved external symbol libusb_claim_interface
+ConsoleApplication1.obj : error LNK2001: unresolved external symbol libusb_bulk_transfer
+D:\ConsoleApplication1\x64\Release\ConsoleApplication1.exe : fatal error LNK1120: 6 unresolved externals

@@ -1,0 +1,16 @@
+﻿  pch.cpp
+  ConsoleApplication1.cpp
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(740,47): warning C4200: nonstandard extension used: zero-sized array in struct/union
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(740,47): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(765,79): warning C4200: nonstandard extension used: zero-sized array in struct/union
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(765,79): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(1258,71): warning C4200: nonstandard extension used: zero-sized array in struct/union
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(1258,71): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+ConsoleApplication1.obj : error LNK2019: unresolved external symbol libusb_init referenced in function main
+ConsoleApplication1.obj : error LNK2019: unresolved external symbol libusb_set_configuration referenced in function main
+ConsoleApplication1.obj : error LNK2019: unresolved external symbol libusb_claim_interface referenced in function main
+ConsoleApplication1.obj : error LNK2019: unresolved external symbol libusb_open_device_with_vid_pid referenced in function main
+ConsoleApplication1.obj : error LNK2019: unresolved external symbol libusb_detach_kernel_driver referenced in function main
+ConsoleApplication1.obj : error LNK2019: unresolved external symbol libusb_bulk_transfer referenced in function main
+libusb-1.0.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
+D:\ConsoleApplication1\x64\Debug\ConsoleApplication1.exe : fatal error LNK1120: 6 unresolved externals

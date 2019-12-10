@@ -1,0 +1,9 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(459,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (ConsoleApplication1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  ConsoleApplication1.cpp
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(740,47): warning C4200: nonstandard extension used: zero-sized array in struct/union
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(740,47): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(765,79): warning C4200: nonstandard extension used: zero-sized array in struct/union
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(765,79): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(1258,71): warning C4200: nonstandard extension used: zero-sized array in struct/union
+D:\ConsoleApplication1\ConsoleApplication1\libusb.h(1258,71): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+  ConsoleApplication1.vcxproj -> D:\ConsoleApplication1\Debug\ConsoleApplication1.exe
