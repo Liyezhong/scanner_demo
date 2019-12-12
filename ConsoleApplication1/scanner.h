@@ -1,6 +1,17 @@
 #pragma once
 
+#ifndef __SCANNER_H_
+#define __SCANNER_H_
+
 #include <cstdint>
+#include <queue>
+#include <mutex>
+#include <algorithm>
+#include <Winsock.h>
+#include <Windows.h>
+
+#include <string>
+#include "libusb.h"
 
 #pragma pack(1)
 
@@ -29,18 +40,6 @@ struct scannermsg {
     uint8_t type;
 } ;
 
-#pragma pack()
-
-#define SCANNER_MSG_PACKING(msg_type)                         \
-        ({                                                    \
-            QMutexLocker locker(&scannermsgQueueLock);        \
-            scannermsg msg = {                                \
-                .head = htons(0xAADD),                        \
-                .type = (msg_type),                           \
-            };                                                \
-            scannermsgQueue.enqueue(msg);                     \
-         })
-
 
 // for scan and photo
 struct scannermsg_ext {
@@ -56,63 +55,18 @@ struct scannermsg_inqure_status {
     uint8_t errorno;
 };
 
+#pragma pack()
+
+
+class ScannerImageQRcodeThread;
 
 
 
-class ScannerMonitorThread : public QThread
+class Scanner
 {
-    Q_OBJECT
+    friend class ScannerImageQRcodeThread;
 public:
-    ScannerMonitorThread()
-    {}
-    void run() override;
-};
-
-class ScannerBase : public QObject
-{
-    Q_OBJECT
-        friend class ScannerImageQRcodeThread;
-public:
-
-public:
-    virtual void PhotoMode() = 0;
-    virtual void BarcodeMode() = 0;
-    virtual void AutoScanningStart() = 0;
-    virtual void AutoScanningStop() = 0;
-    virtual void TriggerPhoto() = 0;
-    virtual void Sleep() = 0;
-    virtual void Wakeup() = 0;
-    virtual void LightOn() = 0;
-    virtual void LightOff() = 0;
-    virtual void EnableScanner() = 0;
-    virtual void DisableScanner() = 0;
-
-private:
-    virtual int send(uint8_t* msg, int len, int& act_len, int timeout) = 0;
-    virtual int receive(uint8_t* msg, int len, int& act_len, int timeout) = 0;
-
-signals:
-    void CmdResultTransfer(int type);
-    void BarcodeTransfer(int id, uint8_t* barcode, int len);
-    void ImageTransfer(int id, uint8_t* image, int len);
-    /**
-        E0 Device is good
-        E1 Camera module is not work
-        E2 Scanner module is not work
-        E3 Others (IBD could define detail)
-    */
-#define E0        0
-#define E1        1
-#define E2        2
-#define E3        3
-    void ErrorCodeTransfer(int errorno);
-};
-
-class Scanner : public ScannerBase
-{
-    friend class ScannerMonitorThread;
-public:
-    explicit Scanner();
+     Scanner();
     ~Scanner();
 
     static Scanner* GetInstance();
@@ -130,45 +84,66 @@ public:
     void EnableScanner();
     void DisableScanner();
 
+
+
 private:
+    void scanner_msg_packing(int msg_type);
     int send(uint8_t* msg, int len, int& act_len, int timeout);
     int receive(uint8_t* msg, int len, int& act_len, int timeout);
 
+public:
     void attach();
     void detach();
 
 public:
-    static int LIBUSB_CALL usb_event_callback(libusb_context* ctx, libusb_device* dev, libusb_hotplug_event event, void* user_data);
 
-signals:
-    void CmdResultTransfer(int type);
-    void BarcodeTransfer(int id, uint8_t* barcode, int len);
-    void ImageTransfer(int id, uint8_t* image, int len);
+#define emit
+typedef void (*_CmdResultTransfer)(int type);
+typedef void (*_BarcodeTransfer)(int id, uint8_t* barcode, int len);
+typedef void (*_ImageTransfer)(int id, uint8_t* image, int len);
+#define E0        0
+#define E1        1
+#define E2        2
+#define E3        3
+typedef void (*_ErrorCodeTransfer)(int errorno);
 
-    void ErrorCodeTransfer(int errorno);
+    _CmdResultTransfer CmdResultTransfer;
+    _BarcodeTransfer BarcodeTransfer;
+    _ImageTransfer ImageTransfer;
+    _ErrorCodeTransfer ErrorCodeTransfer;
 
 private:
     libusb_context* ctx;
     struct libusb_device_handle* handle;
     ScannerImageQRcodeThread* imageQRcodeThread;
-    ScannerMonitorThread* monitorThread;
 
 
-    QMutex             scannermsgQueueLock;
-    QQueue<scannermsg> scannermsgQueue;
+    std::mutex             scannermsgQueueLock;
+    std::queue<scannermsg> scannermsgQueue;
 };
 
 
-
-
-
-
-
-
-
-
-
-class Scanner
+class ScannerImageQRcodeThread
 {
+public:
+    ScannerImageQRcodeThread(Scanner* _scanner)
+        : scanner(_scanner), is_runnable(true)
+    {}
+
+public:
+    void start();
+    void close();
+    bool isRunning();
+
+public:
+    Scanner* scanner;
+    bool is_runnable;
+
+private:
+    void run();
+private:
+    std::thread thread;
 };
 
+
+#endif
